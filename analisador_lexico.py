@@ -1,4 +1,4 @@
-import re
+﻿import re
 from tokens import Token
 
 class ErroLexico(Exception):
@@ -6,18 +6,33 @@ class ErroLexico(Exception):
 
 class AnalisadorLexico:
 	REGEXS = [
-		("ESPACO",	r"\s+"),
-		("ABRE_PAR", r"\("),
-		("FECHA_PAR", r"\)"),
+		("ESPACO",  r"\s+"),
+		("AP",      r"\("),
+		("FP",      r"\)"),
 		("OP_SOMA", r"\+"),
+		("OP_SUB",  r"-"),
 		("OP_MULT", r"\*"),
-		("NUM_INT", r"[0-9]+"),
-		("ID", 		r"[a-zA-Z_][a-zA-Z0-9_]*"),
+		("OP_DIV",  r"/"),
+		("OP_MOD",  r"%"),
+		("OP_MAI",  r">="),
+		("OP_MA",   r">"),
+		("OP_MEI",  r"<="),
+		("OP_ME",   r"<"),
+		("OP_II",   r"=="),
+		("OP_DIFF", r"!="),
+		("OP_I",    r"="),
+		("NUM_INT", r"[0-9]+(?![a-zA-Z_])"),
+		("ID",      r"[a-zA-Z_][a-zA-Z0-9_]*"),
 	]
 		
 	PALAVRAS_RESERVADAS = {
-		"defun": "PR_DEFUN",
-		"let":   "PR_LET",
+		"defun": 	"PR_DEFUN",
+		"if":	 	"PR_IF",
+		"while": 	"PR_WHILE",
+		"begin": 	"PR_BEGIN",
+		"set":		"PR_SET",
+		"print": 	"PR_PRINT",
+		"let":   	"PR_LET",
 	}
 		
 	DESCARTAR = {"ESPACO"}
@@ -33,7 +48,7 @@ class AnalisadorLexico:
 			regra_tex = item[1]
 			self.regras.append((tok, re.compile(regra_tex)))
 			
-	def prox_token(self):
+	def __prox_token(self):
 		while self.pos < len(self.codigo): # loop no texto
 			for item in self.regras:
 				tok = item[0]
@@ -64,7 +79,7 @@ class AnalisadorLexico:
 	def tokenizar(self):
 		toks = []
 		while 1:
-			t = self.prox_token()
+			t = self.__prox_token()
 			toks.append(t)
 			if t.tipo == "FIM":
 				return toks

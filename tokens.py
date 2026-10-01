@@ -7,4 +7,4 @@ class Token:
         self.linha = linha
 
     def __repr__(self):
-        return f"Token: {self.tipo} - {repr(self.lexema)} (linha {self.linha})"
+        return f"Token: {self.tipo} {repr(self.lexema)} (linha {self.linha})"
