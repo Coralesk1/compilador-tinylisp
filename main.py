@@ -1,5 +1,5 @@
 import sys
-from token import Token
+from tokens import Token
 from pathlib import Path
 
 caminho_arquivo = sys.argv[1]
